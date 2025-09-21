@@ -3,9 +3,10 @@ import Navbar from "./Components/Navbar";
 import Body from "./Components/Body";
 import Login from "./Components/Login";
 import Profile from "./Components/Profile";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import appStore from "./utils/appStore";
 import Feed from "./Components/Feed";
+
 
 function App() {
   return (
