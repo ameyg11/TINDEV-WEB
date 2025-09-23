@@ -28,10 +28,10 @@ const Login = () => {
     } catch (err) {
       if (err.response && err.response.data) {
         setError(err.response.data.message);
-        console.log(err.response.data.message);
+        // console.log(err.response.data.message);
       } else {
         setError("An unexpected error occurred. Please try again.");
-        console.log(err);
+        // console.log(err);
       }
     }
   };

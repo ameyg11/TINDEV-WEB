@@ -11,15 +11,15 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const onLogoutClick = async () => {
-    try{
-      await axios.post(BASE_URL + "/logout", {}, {withCredentials: true,});
-      dispatch(removeUser());
-      return navigate("/login")
-    }catch(err){
+    try {
+      await axios.post(BASE_URL + "/logout", {}, { withCredentials: true });
+      dispatch(addUser());
+      return navigate("/login");
+    } catch (err) {
       console.log(err);      // after this redirect to this error page
     }
-  }
-  
+  };
+
   // useEffect(() => {
   //   onLogoutClick();
   // },[]);
@@ -28,7 +28,9 @@ const Navbar = () => {
     <div>
       <div className="navbar bg-base-300 shadow-sm">
         <div className="flex-1">
-          <Link to="/" className="btn btn-ghost text-xl">TinDev </Link>
+          <Link to="/" className="btn btn-ghost text-xl">
+            TinDev{" "}
+          </Link>
         </div>
 
         {user && (
