@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import UserCard from "./UserCard";
 import { BASE_URL } from "../utils/constants";
 import axios from "axios";
+import { addFeed } from "../utils/feedSlice";
 
 const EditProfile = ({ user }) => {
   if (!user) {
@@ -13,13 +14,20 @@ const EditProfile = ({ user }) => {
   const [lastName, setLastName] = useState(user.lastName || "");
   const [age, setAge] = useState(user.age || 25);
   const [gender, setGender] = useState(user.gender || "");
-  const [photoUrl, setPhotoUrl] = useState(user.photoUrl ||"https://i.pinimg.com/736x/21/f6/fc/21f6fc4abd29ba736e36e540a787e7da.jpg");
+  const [photoUrl, setPhotoUrl] = useState(
+    user.photoUrl ||
+      "https://i.pinimg.com/736x/21/f6/fc/21f6fc4abd29ba736e36e540a787e7da.jpg"
+  );
   const [about, setAbout] = useState(user.about || "");
-  const [skills, setSkills] = useState(Array.isArray(user.skills) ? user.skills.join(", ") : user.skills || "React, Node.js, Express, MongoDB");
+  const [skills, setSkills] = useState(
+    Array.isArray(user.skills)
+      ? user.skills.join(", ")
+      : user.skills || "React, Node.js, Express, MongoDB"
+  );
 
   const [error, setError] = useState("");
   const [isSaved, setIsSaved] = useState(false);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const handleSave = async () => {
     try {
@@ -38,21 +46,32 @@ const EditProfile = ({ user }) => {
         (key) => updatedProfile[key] === undefined && delete updatedProfile[key]
       );
 
-      const res = await axios.patch(BASE_URL + "/profile/edit", updatedProfile, {
-        withCredentials: true,
-      });
+      const res = await axios.patch(
+        BASE_URL + "/profile/edit",
+        updatedProfile,
+        {
+          withCredentials: true,
+        }
+      );
 
-      dispatch()
+      dispatch(addFeed(res.data));
 
       if (res.status === 200) {
         setIsSaved(true);
         setError(""); // clear old errors
+        setTimeout(() => {
+          setIsSaved(false); 
+        }, 3000);
       }
     } catch (err) {
-  // console.error("Profile update error:", err.response?.data || err.message);
-  setError(err.response?.data?.message || err.response?.data || "Failed to update profile. Please try again.");
-  setIsSaved(false);
-}
+      console.error("Profile update error:", err.response?.data || err.message);
+      setError(
+        err.response?.data?.message ||
+          err.response?.data ||
+          "Failed to update profile. Please try again."
+      );
+      setIsSaved(false);
+    }
   };
 
   return (
@@ -219,7 +238,20 @@ const EditProfile = ({ user }) => {
           </div>
         )}
       </div>
-      <UserCard user={{ firstName, lastName, age, gender, photoUrl, about, skills: skills.split(",").map(s => s.trim()).filter(Boolean) }} />
+      <UserCard
+        user={{
+          firstName,
+          lastName,
+          age,
+          gender,
+          photoUrl,
+          about,
+          skills: skills
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean),
+        }}
+      />
     </div>
   );
 };
