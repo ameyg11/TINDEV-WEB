@@ -20,7 +20,6 @@ const Feed = () => {
       dispatch(addFeed(res.data));
     } catch (err) {
       console.log(err);
-      setLoading(false);
     }
   };
 
