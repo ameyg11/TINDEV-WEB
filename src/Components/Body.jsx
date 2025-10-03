@@ -33,12 +33,15 @@ const Body = () => {
   }, []);
 
   return (
-    <>
-      <Navbar />
+  <div className="flex flex-col min-h-screen">
+    <Navbar />
+    <main className="flex-1">
       <Outlet />
-      {/* <Footer /> */}
-    </>
-  );
+    </main>
+    <Footer />
+  </div>
+);
+
 };
 
 export default Body;

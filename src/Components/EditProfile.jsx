@@ -13,7 +13,7 @@ const EditProfile = ({ user }) => {
   const [firstName, setFirstName] = useState(user.firstName || "");
   const [lastName, setLastName] = useState(user.lastName || "");
   const [age, setAge] = useState(user.age || 25);
-  const [gender, setGender] = useState(user.gender || "");
+  const [gender, setGender] = useState(user.gender || "Male");
   const [photoUrl, setPhotoUrl] = useState(
     user.photoUrl ||
       "https://i.pinimg.com/736x/21/f6/fc/21f6fc4abd29ba736e36e540a787e7da.jpg"
@@ -148,9 +148,9 @@ const EditProfile = ({ user }) => {
               value={gender}
               onChange={(e) => setGender(e.target.value)}
             >
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="others">Others</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Others">Others</option>
             </select>
           </div>
 
