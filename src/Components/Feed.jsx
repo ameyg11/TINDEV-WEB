@@ -32,7 +32,7 @@ const Feed = () => {
     {feed && feed.length > 0 ? (
       <UserCard user={feed[0]} />
     ) : (
-      <p>Loading...</p>
+      <p className="flex justify-center text-4xl font-semibold mt-10">Loading...</p>
     )}
   </div>
 );
