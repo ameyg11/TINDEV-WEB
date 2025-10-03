@@ -14,3 +14,7 @@ to do bugs
 => user is seeing his own profile
         -> I think it is handled in API but ......... 
         -> see { ameyg11@gmail.com      pass- Ameygawade@11  }  profile
+
+
+=> just take some time and see the whole code and then start deployment
+        -> review each code 
