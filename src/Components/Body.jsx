@@ -22,7 +22,7 @@ const Body = () => {
       if (err.status === 401) {
         navigate("/login");
       }
-      // console.log(err);
+      // //console.log(err);
     }
   };
 
@@ -33,15 +33,14 @@ const Body = () => {
   }, []);
 
   return (
-  <div className="flex flex-col min-h-screen">
-    <Navbar />
-    <main className="flex-1">
-      <Outlet />
-    </main>
-    <Footer />
-  </div>
-);
-
+    <div className="flex flex-col min-h-screen">
+      <Navbar />
+      <main className="flex-1">
+        <Outlet />
+      </main>
+      <Footer />
+    </div>
+  );
 };
 
 export default Body;

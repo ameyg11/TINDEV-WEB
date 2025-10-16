@@ -16,7 +16,7 @@ const Navbar = () => {
       dispatch(addUser());
       return navigate("/login");
     } catch (err) {
-      console.log(err);      // after this redirect to this error page
+      //console.log(err);      // after this redirect to this error page
     }
   };
 
@@ -28,6 +28,7 @@ const Navbar = () => {
     <div>
       <div className="navbar bg-base-300 shadow-sm">
         <div className="flex-1">
+          <img src="/logo.png" alt="TinDev Logo" className="h-8 w-8 mr-2" />
           <Link to="/" className="btn btn-ghost text-xl">
             TinDev{" "}
           </Link>

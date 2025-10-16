@@ -9,9 +9,9 @@ import { FaLock, FaEnvelope, FaUser } from "react-icons/fa";
 const Login = () => {
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
-  const [ firstName, setFirstName ] = useState("");
-  const [ lastName, setLastName ] = useState("");
-  const [ isLoginForm, setIsLoginForm ] = useState(true);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [isLoginForm, setIsLoginForm] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -31,15 +31,15 @@ const Login = () => {
     } catch (err) {
       if (err.response && err.response.data) {
         setError(err.response.data.message);
-        // console.log(err.response.data.message);
+        // //console.log(err.response.data.message);
       } else {
         setError("An unexpected error occurred. Please try again.");
-        // console.log(err);
+        // //console.log(err);
       }
     }
   };
 
-  const handleSignupClick = async() => {
+  const handleSignupClick = async () => {
     try {
       const res = await axios.post(
         BASE_URL + "/signup",
@@ -60,7 +60,7 @@ const Login = () => {
         setError("An unexpected error occurred. Please try again.");
       }
     }
-  }
+  };
 
   return (
     <div className="flex justify-center items-center h-screen bg-neutral-900 text-neutral-content p-4">
@@ -78,34 +78,42 @@ const Login = () => {
             <h2 className="card-title text-4xl font-extrabold mb-2">
               Welcome!
             </h2>
-            <p className="text-neutral-400">{isLoginForm ? "Login in to your account.": "SignUp for finding your new team members!"}</p>
+            <p className="text-neutral-400">
+              {isLoginForm
+                ? "Login in to your account."
+                : "SignUp for finding your new team members!"}
+            </p>
           </div>
 
-          {!isLoginForm && <><div className="form-control mb-4">
-            <label className="input input-bordered flex items-center gap-3 bg-neutral-700 border-neutral-600 focus-within:border-primary">
-              <FaUser className="text-neutral-500" />
-              <input
-                type="text"
-                placeholder="First Name"
-                className="grow"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-              />
-            </label>
-          </div>
+          {!isLoginForm && (
+            <>
+              <div className="form-control mb-4">
+                <label className="input input-bordered flex items-center gap-3 bg-neutral-700 border-neutral-600 focus-within:border-primary">
+                  <FaUser className="text-neutral-500" />
+                  <input
+                    type="text"
+                    placeholder="First Name"
+                    className="grow"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                  />
+                </label>
+              </div>
 
-          <div className="form-control mb-4">
-            <label className="input input-bordered flex items-center gap-3 bg-neutral-700 border-neutral-600 focus-within:border-primary">
-              <FaUser className="text-neutral-500" />
-              <input
-                type="text"
-                placeholder="Last Name"
-                className="grow"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-              />
-            </label>
-          </div></>}
+              <div className="form-control mb-4">
+                <label className="input input-bordered flex items-center gap-3 bg-neutral-700 border-neutral-600 focus-within:border-primary">
+                  <FaUser className="text-neutral-500" />
+                  <input
+                    type="text"
+                    placeholder="Last Name"
+                    className="grow"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                  />
+                </label>
+              </div>
+            </>
+          )}
 
           <div className="form-control mb-4">
             <label className="input input-bordered flex items-center gap-3 bg-neutral-700 border-neutral-600 focus-within:border-primary">
@@ -142,12 +150,19 @@ const Login = () => {
           <div className="form-control">
             <button
               className="btn btn-primary btn-block text-lg font-bold py-3 transition-transform transform hover:scale-105"
-              onClick={isLoginForm ? handleLoginClick: handleSignupClick}
+              onClick={isLoginForm ? handleLoginClick : handleSignupClick}
             >
               {isLoginForm ? "Login" : "SignUp"}
             </button>
           </div>
-          <p className="text-indigo-200 flex justify-center cursor-pointer mt-2 pt-2 "  onClick={() => setIsLoginForm((value) => !value)}>{isLoginForm ? "Create an account" : "Already have an account: Login!"}</p>
+          <p
+            className="text-indigo-200 flex justify-center cursor-pointer mt-2 pt-2 "
+            onClick={() => setIsLoginForm((value) => !value)}
+          >
+            {isLoginForm
+              ? "Create an account"
+              : "Already have an account: Login!"}
+          </p>
         </div>
       </div>
     </div>

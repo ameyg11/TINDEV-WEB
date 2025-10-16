@@ -12,10 +12,10 @@ const Connections = () => {
       const res = await axios.get(BASE_URL + "/user/connections", {
         withCredentials: true,
       });
-      console.log(res.data.data);
+      //console.log(res.data.data);
       dispatch(addConnections(res.data.data));
     } catch (err) {
-      console.log(err);
+      //console.log(err);
     }
   };
 
@@ -25,13 +25,18 @@ const Connections = () => {
 
   if (!connections) return;
 
-  if (connections.length === 0) return <h1 className="flex justify-center text-4xl font-semibold mt-10">No Connections Found</h1>;
+  if (connections.length === 0)
+    return (
+      <h1 className="flex justify-center text-4xl font-semibold mt-10">
+        No Connections Found
+      </h1>
+    );
 
   return (
     <div className="justify-center my-10">
       <h1 className="justify-center flex text-bold text-2xl">Connections</h1>
       {connections.map((connection) => {
-        const { _id ,firstName, lastName, photoUrl, age, gender, about } =
+        const { _id, firstName, lastName, photoUrl, age, gender, about } =
           connection;
 
         return (

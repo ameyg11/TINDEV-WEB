@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { BASE_URL } from '../utils/constants';
-import { useDispatch, useSelector } from 'react-redux';
-import { addFeed } from '../utils/feedSlice';
-import axios from 'axios';
-import UserCard from './UserCard';
+import React, { useEffect, useState } from "react";
+import { BASE_URL } from "../utils/constants";
+import { useDispatch, useSelector } from "react-redux";
+import { addFeed } from "../utils/feedSlice";
+import axios from "axios";
+import UserCard from "./UserCard";
 
 const Feed = () => {
   const feed = useSelector((store) => store.feed);
@@ -15,11 +15,13 @@ const Feed = () => {
     }
 
     try {
-      const res = await axios.get(BASE_URL + "/feed", { withCredentials: true });
-      console.log("Fetched data:", res.data);
+      const res = await axios.get(BASE_URL + "/feed", {
+        withCredentials: true,
+      });
+      //console.log("Fetched data:", res.data);
       dispatch(addFeed(res.data));
     } catch (err) {
-      console.log(err);
+      //console.log(err);
     }
   };
 
@@ -28,15 +30,16 @@ const Feed = () => {
   }, []);
 
   return (
-  <div className="flex flex-wrap justify-center gap-6 mt-10">
-    {feed && feed.length > 0 ? (
-      <UserCard user={feed[0]} />
-    ) : (
-      <p className="flex justify-center text-4xl font-semibold mt-10">Loading...</p>
-    )}
-  </div>
-);
-
+    <div className="flex flex-wrap justify-center gap-6 mt-10">
+      {feed && feed.length > 0 ? (
+        <UserCard user={feed[0]} />
+      ) : (
+        <p className="flex justify-center text-4xl font-semibold mt-10">
+          Loading...
+        </p>
+      )}
+    </div>
+  );
 };
 
 export default Feed;
