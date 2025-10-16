@@ -1,57 +1,48 @@
+// src/Components/UserCard.jsx
 import React from "react";
-import { BASE_URL } from "../utils/constants";
-import axios from "axios";
-import { useDispatch } from "react-redux";
-import { removeUserFromFeed } from "../utils/feedSlice";
 
-const UserCard = ({ user }) => {
-  const { _id, firstName, lastName, photoUrl, age, gender, about } = user;
-  //console.log(_id);
-  const dispatch = useDispatch();
+const UserCard = React.forwardRef(({ user, onAction }, ref) => {
+  if (!user) return null;
 
-  const handleSendRequest = async (status, _id) => {
-    try {
-      const res = await axios.post(
-        BASE_URL + "/request/send/" + status + "/" + _id,
-        {},
-        { withCredentials: true }
-      );
-      dispatch(removeUserFromFeed(user._id));
-    } catch (err) {
-      //console.log(err);
-    }
-  };
+  const { firstName, lastName, photoUrl, age, gender, about } = user;
 
   return (
-    user && (
-      <div>
-        <div className="card bg-gray-900 w-96 shadow-sm ">
-          <figure>
-            <img src={photoUrl} alt="profile image" />
-          </figure>
-          <div className="card-body">
-            <h2 className="card-title">{firstName + " " + lastName}</h2>
-            <p>{about}</p>
-            {age && gender ? <p>{age + " " + gender}</p> : ""}
-            <div className="card-actions justify-center">
-              <button
-                onClick={() => handleSendRequest("ignored", _id)}
-                className="btn btn-outline btn-error"
-              >
-                Ignore
-              </button>
-              <button
-                onClick={() => handleSendRequest("interested", _id)}
-                className="btn btn-outline btn-info"
-              >
-                Interested
-              </button>
-            </div>
+    <div ref={ref} className="absolute">
+      <div className="card bg-neutral-800 w-80 md:w-96 shadow-xl relative overflow-hidden">
+        <figure className="h-96">
+          <img
+            src={photoUrl}
+            alt="profile"
+            className="object-cover w-full h-full"
+          />
+        </figure>
+
+        {/* Overlay */}
+        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black via-black/80 to-transparent text-white">
+          <h2 className="card-title text-2xl font-bold">
+            {firstName} {lastName}
+          </h2>
+          {age && gender && <p className="text-sm">{age} {gender}</p>}
+          {about && <p className="mt-1">{about}</p>}
+
+          <div className="flex justify-center gap-3 mt-4">
+            <button
+              onClick={() => onAction("ignored")}
+              className="btn btn-outline btn-error"
+            >
+              Ignore
+            </button>
+            <button
+              onClick={() => onAction("interested")}
+              className="btn btn-outline btn-info"
+            >
+              Interested
+            </button>
           </div>
         </div>
       </div>
-    )
+    </div>
   );
-};
+});
 
 export default UserCard;

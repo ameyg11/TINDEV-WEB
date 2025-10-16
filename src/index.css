@@ -1,2 +1,8 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+/* src/index.css */
+
+.swipe {
+  position: absolute;
+}

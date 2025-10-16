@@ -1,37 +1,34 @@
+// src/App.jsx
+
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Navbar from "./Components/Navbar";
+import { Provider } from "react-redux";
+import appStore from "./utils/appStore";
+
 import Body from "./Components/Body";
 import Login from "./Components/Login";
-import Profile from "./Components/Profile";
-import { Provider, useDispatch } from "react-redux";
-import appStore from "./utils/appStore";
 import Feed from "./Components/Feed";
+import Profile from "./Components/Profile";
 import Connections from "./Components/Connections";
 import Requests from "./Components/Requests";
 
-
 function App() {
   return (
-    <>
-      <Provider store={appStore}>
-        <BrowserRouter basename="/">
-          <Routes>
-            <Route path="/" element={<Body />}>
-              <Route path="/" element={<Feed />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/connections" element={<Connections />} />
-              <Route path="/requests" element={<Requests />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </Provider>
+    <Provider store={appStore}>
+      <BrowserRouter basename="/">
+        <Routes>
+          {/* Route for the login page (does NOT use the Body layout) */}
+          <Route path="/login" element={<Login />} />
 
-      {/* <Navbar />
-      <h1 className="bg-red-600 text-amber-300 text-4xl underline border border-b-emerald-900">
-        Hello World !!
-      </h1> */}
-    </>
+          {/* All other routes are nested inside the Body layout */}
+          <Route path="/" element={<Body />}>
+            <Route index element={<Feed />} /> {/* 'index' sets Feed as the default child route */}
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/connections" element={<Connections />} />
+            <Route path="/requests" element={<Requests />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   );
 }
 
