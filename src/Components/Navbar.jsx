@@ -28,9 +28,15 @@ const Navbar = () => {
     <div>
       <div className="navbar bg-base-300 shadow-sm">
         <div className="flex-1">
-          <img src="/logo.png" alt="TinDev Logo" className="h-8 w-8 mr-2" />
-          <Link to="/" className="btn btn-ghost text-xl">
-            TinDev{" "}
+          <Link to="/" className="flex items-center font-bold text-xl">
+            <img
+              src="/logo.png"
+              alt="TinDev Logo"
+              className="h- w-8 pt-0.5 mr-2"
+            />
+            <span className="text-3xl font-bold bg-gradient-to-r from-[#6366F1] to-[#EC4899] text-transparent bg-clip-text">
+              TinDev
+            </span>
           </Link>
         </div>
 
