@@ -1,5 +1,3 @@
-// src/Components/Body.jsx
-
 import React, { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -36,20 +34,28 @@ const Body = () => {
   }, [userData, dispatch, navigate]);
 
   return (
-    <div className="flex bg-black min-h-screen text-white">
-      {/* Column 1: Sidebar (Fixed Width) */}
-      <div className="w-[244px] border-r border-neutral-800 p-4 hidden md:block">
-        <Sidebar />
-      </div>
+    <div className="bg-black min-h-screen text-white">
+      {/* Sidebar is now a self-positioning component */}
+      <Sidebar />
 
-      {/* Column 2: Main Content (Flexible Width) */}
-      <main className="flex-1 max-w-2xl mx-auto py-6 px-4">
-        <Outlet /> {/* This renders Feed, Profile, etc. */}
-      </main>
+      {/* Main Content Wrapper */}
+      {/* On desktop (md), we add margin-left to make space for the sidebar. */}
+      {/* On mobile, this div has no margin, and content flows naturally. */}
+      <div className="md:ml-[244px]">
+        <div className="flex justify-center">
+          
+          {/* Main Content Area (Feed, Profile, etc.) */}
+          {/* We add padding-bottom on mobile (pb-20) to prevent the bottom nav from hiding content. */}
+          <main className="flex-1 max-w-2xl mx-auto py-6 px-4 pb-20 md:pb-6">
+            <Outlet /> {/* This renders Feed, Profile, etc. */}
+          </main>
 
-      {/* Column 3: Suggestions (Fixed Width, hidden on smaller screens) */}
-      <div className="w-[380px] border-l border-neutral-800 p-6 hidden lg:block">
-        <Suggestions />
+          {/* Suggestions Column */}
+          {/* This remains hidden on small/medium screens and appears on large screens. */}
+          <aside className="w-[380px] border-l border-neutral-800 p-6 hidden lg:block">
+            <Suggestions />
+          </aside>
+        </div>
       </div>
     </div>
   );

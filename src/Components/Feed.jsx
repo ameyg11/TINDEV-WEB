@@ -53,32 +53,34 @@ const Feed = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-full w-full">
-      <div className="relative w-80 h-[28rem] md:w-96 mt-10">
-        {users && users.length > 0 ? (
-          users.map((user) => (
-            <TinderCard
-              className="absolute"
-              key={user._id}
-              preventSwipe={["up", "down"]}
-              swipeRequirementType="position"
-              flickOnSwipe={true} // ✅ ensures proper swipe physics
-              onSwipe={(dir) => swiped(dir, user._id)}
-            >
-              <UserCard
-                user={user}
-                onAction={(status) => handleSendRequest(status, user._id)}
-              />
-            </TinderCard>
-          ))
-        ) : (
-          <p className="text-center text-2xl font-semibold text-neutral-400">
-            No more profiles to show.
-          </p>
-        )}
-      </div>
+  <div className="flex justify-center items-center h-full w-full">
+    {/* increased top margin from mt-10 → mt-20 for better vertical centering */}
+    <div className="relative w-80 h-[28rem] md:w-96 mt-35">
+      {users && users.length > 0 ? (
+        users.map((user) => (
+          <TinderCard
+            className="absolute"
+            key={user._id}
+            preventSwipe={["up", "down"]}
+            swipeRequirementType="position"
+            flickOnSwipe={true}
+            onSwipe={(dir) => swiped(dir, user._id)}
+          >
+            <UserCard
+              user={user}
+              onAction={(status) => handleSendRequest(status, user._id)}
+            />
+          </TinderCard>
+        ))
+      ) : (
+        <p className="text-center text-2xl font-semibold text-neutral-400">
+          No more profiles to show.
+        </p>
+      )}
     </div>
-  );
+  </div>
+);
+
 };
 
 export default Feed;
