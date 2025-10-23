@@ -24,6 +24,11 @@ const Auth = () => {
   
   // State for multi-step signup form
   const [step, setStep] = useState(1);
+
+  // below your other useState hooks
+const [otp, setOtp] = useState('');
+const [otpSent, setOtpSent] = useState(false);
+
   
   // State for form inputs
   const [email, setEmail] = useState('');
@@ -60,24 +65,57 @@ const Auth = () => {
     }
   };
   
-  const handleSignup = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError('');
-    try {
-      const res = await axios.post(
-        BASE_URL + '/signup',
-        { firstName, lastName, emailId: email, password },
-        { withCredentials: true }
-      );
-      dispatch(addUser(res.data));
-      navigate('/profile');
-    } catch (err) {
-      setError(err.response?.data?.message || 'An unexpected error occurred.');
-    } finally {
-      setIsLoading(false);
+ const handleSignup = async (e) => {
+  e.preventDefault();
+  setIsLoading(true);
+  setError('');
+  try {
+    const res = await axios.post(
+      BASE_URL + '/signup',
+      { firstName, lastName, emailId: email, password },
+      { withCredentials: true }
+    );
+
+    // Expect backend to send: { success: true, message: "OTP sent to email" }
+    if (res.data.success) {
+      setOtpSent(true);
+      setStep(4); // go to OTP step
+    } else {
+      setError('Something went wrong while sending OTP.');
     }
-  };
+  } catch (err) {
+    setError(err.response?.data?.message || 'An unexpected error occurred.');
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+
+const handleVerifyOtp = async (e) => {
+  e.preventDefault();
+  setIsLoading(true);
+  setError('');
+  try {
+    const res = await axios.post(
+      BASE_URL + '/verify-otp',
+      { emailId: email, otp },
+      { withCredentials: true }
+    );
+
+    if (res.data.success) {
+      dispatch(addUser(res.data.user));
+      navigate('/profile');
+    } else {
+      setError('Invalid or expired OTP. Please try again.');
+    }
+  } catch (err) {
+    setError(err.response?.data?.message || 'Verification failed.');
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+
 
   // --- UI Control Handlers ---
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
@@ -152,14 +190,18 @@ const Auth = () => {
             {/* Progress Bar */}
             <div className="mb-6">
               <div className="flex justify-between items-center mb-3">
-                <span className="text-sm font-medium text-gray-900 dark:text-gray-100">Step {step} of 3</span>
-                <span className="text-sm text-gray-500 dark:text-gray-400">{Math.round((step / 3) * 100)}%</span>
+                <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                  Step {step <= 4 ? step : 4} of 4
+                </span>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  {step <= 4 ? Math.round((step / 4) * 100) : 100}%
+                </span>
               </div>
               <div className="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2 overflow-hidden">
-                <div className="auth-progress bg-gray-900 dark:bg-gray-100 h-2 rounded-full" style={{ width: `${(step / 3) * 100}%` }} />
+                <div className="auth-progress bg-gray-900 dark:bg-gray-100 h-2 rounded-full" style={{ width: `${(step / 4) * 100}%` }} />
               </div>
             </div>
-
+            
             <div className="signin-card bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-lg shadow-sm p-6">
               <div className="text-center mb-6">
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 dark:bg-gray-900 rounded-full mb-4"><UserIcon /></div>
@@ -168,6 +210,7 @@ const Auth = () => {
                   {step === 1 && "Let's start with your name"}
                   {step === 2 && "Now, set up your credentials"}
                   {step === 3 && "Almost done! Review your details"}
+                  {step === 4 && "Enter the OTP sent to your email"}
                 </p>
               </div>
               
@@ -176,11 +219,11 @@ const Auth = () => {
                 {step === 1 && <div className="auth-step space-y-4">
                     <div className="space-y-2">
                         <label htmlFor="firstName" className="text-sm font-medium text-gray-900 dark:text-gray-100">First Name</label>
-                        <input id="firstName" type="text" value={firstName} onChange={e => setFirstName(e.target.value)} placeholder="e.g., John" className="auth-input w-full px-3 py-2 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-md text-sm" required />
+                        <input id="firstName" type="text" value={firstName} onChange={e => setFirstName(e.target.value)} placeholder="e.g., Bhupendra" className="auth-input w-full px-3 py-2 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-md text-sm" required />
                     </div>
                      <div className="space-y-2">
                         <label htmlFor="lastName" className="text-sm font-medium text-gray-900 dark:text-gray-100">Last Name</label>
-                        <input id="lastName" type="text" value={lastName} onChange={e => setLastName(e.target.value)} placeholder="e.g., Doe" className="auth-input w-full px-3 py-2 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-md text-sm" required />
+                        <input id="lastName" type="text" value={lastName} onChange={e => setLastName(e.target.value)} placeholder="e.g., Jogi" className="auth-input w-full px-3 py-2 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-md text-sm" required />
                     </div>
                     <button type="button" onClick={handleNextStep} disabled={!firstName || !lastName} className="auth-button w-full flex items-center justify-center gap-2">Next Step <ArrowRightIcon /></button>
                 </div>}
@@ -217,10 +260,40 @@ const Auth = () => {
                         {isLoading ? <div className="flex items-center justify-center gap-2"><div className="animate-spin rounded-full h-4 w-4 border-2 border-white dark:border-gray-900 border-t-transparent"></div> Creating Account...</div> : 'Create Account'}
                     </button>
                 </div>}
+                
+                {step === 4 && (
+  <div className="auth-step space-y-4">
+    <p className="text-sm text-gray-600 dark:text-gray-400">
+      We’ve sent a verification code to your email: <strong>{email}</strong>
+    </p>
+    <input
+      type="text"
+      value={otp}
+      onChange={(e) => setOtp(e.target.value)}
+      placeholder="Enter OTP"
+      className="auth-input w-full px-3 py-2 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-md text-sm"
+      required
+    />
+    {error && (
+      <p className="text-sm text-red-500 dark:text-red-400">{error}</p>
+    )}
+    <button
+      onClick={handleVerifyOtp}
+      disabled={isLoading || !otp}
+      className="auth-button w-full flex items-center justify-center gap-2"
+    >
+      {isLoading ? 'Verifying...' : 'Verify Email'}
+    </button>
+  </div>
+)}
+
+
               </form>
+
+              
               
               {/* Back button */}
-              {step > 1 && <button onClick={handlePrevStep} className="mt-4 w-full text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 text-sm font-medium flex items-center justify-center gap-2">
+              {(step > 1 && step < 4) && <button onClick={handlePrevStep} className="mt-4 w-full text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 text-sm font-medium flex items-center justify-center gap-2">
                 <ArrowLeftIcon /> Back
               </button>}
 

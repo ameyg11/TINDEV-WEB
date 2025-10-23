@@ -2,9 +2,9 @@ this is the front-end part of the TinDev Social media platform once created comp
 
 
 to do bugs
- => add the toast after saving profile or error occured
+ => add the toast after saving profile or error occured         ✅
 
- => solve  the bug of user data just after signup
+ => solve  the bug of user data just after signup        
         -> when a user signs up and redirects to profile then he doesn't see the firstName and lastName etc in the input section
            but when he refreshes the page the data comes 
 
@@ -18,3 +18,14 @@ to do bugs
 
 => just take some time and see the whole code and then start deployment
         -> review each code 
+
+
+=> validation email              ✅
+
+
+## for 23/10/2025 
+   =>  change the frontend lines 
+                like placeholder
+                email verification caption        => company rights
+
+## change the background of the  login/signup form to something creative keep it as a background 
