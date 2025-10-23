@@ -20,8 +20,7 @@
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.9.1",
     "react-tinder-card": "^1.6.4",
-    "tailwindcss": "^4.1.13",
-    "lucide-react": "^0.546.0"
+    "tailwindcss": "^4.1.13"
   },
   "devDependencies": {
     "@eslint/js": "^9.35.0",
