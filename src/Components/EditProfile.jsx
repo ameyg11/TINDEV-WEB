@@ -26,6 +26,7 @@ const EditProfile = ({ user }) => {
   const [error, setError] = useState("");
   const [isSaved, setIsSaved] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [uploading, setUploading] = useState(false); // 🆕 upload state
 
   const dispatch = useDispatch();
 
@@ -44,6 +45,28 @@ const EditProfile = ({ user }) => {
     return () => window.removeEventListener("keydown", handleEsc);
   }, []);
 
+  // 🆕 handle image upload to Cloudinary
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("file", file);
+
+    // ... inside handleImageUpload ...
+    try {
+      setUploading(true); // 👈 Set uploading true before request
+      const res = await axios.post(`${BASE_URL}/upload/image`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      console.log("✅ Uploaded URL:", res.data.url);
+      setPhotoUrl(res.data.url); // 👈 FIX: Update the photoUrl state
+    } catch (error) {
+      console.error("❌ Image upload error:", error);
+    } finally {
+      setUploading(false); // 👈 Set uploading false after completion
+    }
+  };
+
   const handleSave = async () => {
     try {
       const updatedProfile = {
@@ -56,9 +79,13 @@ const EditProfile = ({ user }) => {
         skills: skills.split(",").map((s) => s.trim()),
       };
 
-      const res = await axios.patch(`${BASE_URL}/profile/edit`, updatedProfile, {
-        withCredentials: true,
-      });
+      const res = await axios.patch(
+        `${BASE_URL}/profile/edit`,
+        updatedProfile,
+        {
+          withCredentials: true,
+        }
+      );
 
       dispatch(addFeed(res.data));
 
@@ -152,34 +179,77 @@ const EditProfile = ({ user }) => {
             <h2 className="text-lg font-semibold text-gray-200 mb-4 border-b border-gray-800 pb-2">
               About You
             </h2>
-            <div>
-              <label className="block text-gray-300 text-sm mb-1">
-                Profile Photo URL
-              </label>
-              <input
-                type="url"
-                value={photoUrl}
-                onChange={(e) => setPhotoUrl(e.target.value)}
-                className="w-full bg-[#1b1b1b] border border-[#333] rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
-              />
-              <label className="block text-gray-300 text-sm mb-1">About</label>
-              <textarea
-                value={about}
-                onChange={(e) => setAbout(e.target.value)}
-                maxLength={99}
-                className="w-full bg-[#1b1b1b] border border-[#333] rounded-lg px-4 py-2 h-24 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Tell us a bit about yourself..."
-              />
-              <p className="text-xs text-gray-500 text-right mt-1">
-                {about.length}/99
-              </p>
-            </div>
+
+            {/* 🆕 Image Upload */}
+            {/* 🆕 Image Upload */}
+<div className="mb-4 flex flex-col sm:flex-row items-center gap-4">
+  <img
+    src={
+      photoUrl ||
+      "https://via.placeholder.com/96x96.png?text=Preview"
+    }
+    alt="Preview"
+    className="w-24 h-24 rounded-full object-cover border border-gray-700"
+  />
+
+  <div className="flex flex-col sm:flex-row gap-2 items-center">
+    <label className="cursor-pointer text-sm text-gray-300 bg-[#1b1b1b] border border-[#333] rounded-md px-3 py-1 hover:bg-[#222] transition">
+      Choose Photo
+      <input
+        type="file"
+        accept="image/*"
+        onChange={async (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+
+          // Local preview before upload
+          const localUrl = URL.createObjectURL(file);
+          setPhotoUrl(localUrl);
+
+          const formData = new FormData();
+          formData.append("file", file);
+
+          try {
+            setUploading(true);
+            const res = await axios.post(`${BASE_URL}/upload/image`, formData, {
+              headers: { "Content-Type": "multipart/form-data" },
+            });
+
+            setPhotoUrl(res.data.url);
+          } catch (error) {
+            console.error("❌ Image upload error:", error);
+          } finally {
+            setUploading(false);
+          }
+        }}
+        className="hidden"
+      />
+    </label>
+
+    {uploading && (
+      <p className="text-blue-400 text-sm animate-pulse">Uploading...</p>
+    )}
+  </div>
+</div>
+
+
+            <label className="block text-gray-300 text-sm mb-1">About</label>
+            <textarea
+              value={about}
+              onChange={(e) => setAbout(e.target.value)}
+              maxLength={99}
+              className="w-full bg-[#1b1b1b] border border-[#333] rounded-lg px-4 py-2 h-24 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Tell us a bit about yourself..."
+            />
+            <p className="text-xs text-gray-500 text-right mt-1">
+              {about.length}/99
+            </p>
           </section>
 
           {/* --- Skills Section --- */}
           <section>
             <h2 className="text-lg font-semibold text-gray-200 mb-4 border-b border-gray-800 pb-2">
-              Skills
+              Skills <span className="text-sm font-serif font-light">(comma seperated)</span>
             </h2>
             <input
               value={skills}
@@ -238,7 +308,6 @@ const EditProfile = ({ user }) => {
             onClick={(e) => e.stopPropagation()}
             className="relative bg-gradient-to-b from-[#1b1b1b]/95 to-[#111]/95 border border-[#2a2a2a] rounded-2xl shadow-2xl max-w-sm w-full p-6 transform transition-all duration-300 scale-95 opacity-0 animate-fadeInCard hover:scale-105"
           >
-            {/* ✖️ Close Button */}
             <button
               onClick={() => setShowPreview(false)}
               className="absolute top-3 right-3 text-gray-400 hover:text-white transition-transform transform hover:scale-110"
@@ -246,7 +315,6 @@ const EditProfile = ({ user }) => {
               ✕
             </button>
 
-            {/* Card Preview */}
             <UserCard
               user={{
                 firstName,
@@ -263,7 +331,6 @@ const EditProfile = ({ user }) => {
             />
           </div>
 
-          {/* --- Animations --- */}
           <style jsx>{`
             @keyframes fadeInCard {
               0% {
