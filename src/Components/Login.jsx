@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { addUser } from '../utils/userSlice'; // Make sure this path is correct
 import { BASE_URL } from '../utils/constants'; // Make sure this path is correct
 
@@ -183,6 +183,12 @@ const handleVerifyOtp = async (e) => {
                 <button onClick={toggleFormMode} className="font-medium text-gray-900 dark:text-gray-100 hover:underline focus:outline-none">Sign up</button>
               </p>
             </div>
+            <p className="text-sm text-gray-500 mt-2 ml-2 text-center">
+              By signing up, you agree to our{" "}
+              <Link to="/terms" className="text-blue-600 underline">
+                Terms & Privacy Policy
+              </Link>
+            </p>
           </div>
         ) : (
           // --- Multi-Step Signup Form ---

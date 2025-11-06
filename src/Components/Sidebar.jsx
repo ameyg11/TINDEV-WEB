@@ -5,8 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { addUser } from "../utils/userSlice";
-
-// Icons
 import { FaUserFriends, FaRegBell, FaRegCommentDots } from "react-icons/fa";
 import { IoHomeOutline } from "react-icons/io5";
 
@@ -52,15 +50,13 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* ✅ MOBILE HEADER (Top bar) */}
+      {/* ✅ MOBILE HEADER */}
       <div className="fixed top-0 left-0 w-full flex justify-between items-center px-4 py-2 bg-black border-b border-neutral-800 z-50 md:hidden">
-        {/* Left: Logo */}
         <div className="flex items-center gap-2">
           <img src="/logo.png" alt="TinDev Logo" className="h-6 w-6" />
           <span className="text-base font-semibold text-white">TinDev</span>
         </div>
 
-        {/* Right: Messages Icon */}
         <div className="relative" ref={messageRef}>
           <button
             onClick={() => setShowMessagePopup(!showMessagePopup)}
@@ -68,8 +64,6 @@ const Sidebar = () => {
           >
             <FaRegCommentDots size={22} />
           </button>
-
-          {/* Coming soon popup */}
           {showMessagePopup && (
             <div className="absolute right-0 mt-2 bg-neutral-900 border border-neutral-700 rounded-lg shadow-lg px-4 py-2 text-sm text-gray-300">
               💬 Messages — Coming soon
@@ -78,7 +72,7 @@ const Sidebar = () => {
         </div>
       </div>
 
-      {/* ✅ MAIN SIDEBAR (Bottom for mobile / Left for desktop) */}
+      {/* ✅ MAIN SIDEBAR */}
       <div
         className="
         fixed bottom-0 left-0 w-full h-16 bg-black border-t border-neutral-800 z-40 flex items-center
@@ -97,21 +91,12 @@ const Sidebar = () => {
 
         {/* Navigation Links */}
         <nav className="flex-grow w-full">
-          <ul
-            className="
-            flex flex-row justify-around items-center h-full
-            md:flex-col md:justify-start md:items-stretch md:gap-2 text-lg
-          "
-          >
+          <ul className="flex flex-row justify-around items-center h-full md:flex-col md:justify-start md:items-stretch md:gap-2 text-lg">
             {navItems.map((item) => (
               <li key={item.to}>
                 <Link
                   to={item.to}
-                  className="
-                  flex items-center justify-center p-3 rounded-lg
-                  hover:bg-neutral-800 transition-colors duration-200
-                  md:justify-start md:gap-4
-                "
+                  className="flex items-center justify-center p-3 rounded-lg hover:bg-neutral-800 transition-colors duration-200 md:justify-start md:gap-4"
                 >
                   {item.icon}
                   <span className="hidden md:inline">{item.text}</span>
@@ -119,7 +104,7 @@ const Sidebar = () => {
               </li>
             ))}
 
-            {/* 💬 Messages (same as top-right in mobile) */}
+            {/* 💬 Messages */}
             <li className="relative hidden md:block" ref={messageRef}>
               <button
                 onClick={() => setShowMessagePopup(!showMessagePopup)}
@@ -149,22 +134,20 @@ const Sidebar = () => {
                 <span className="hidden md:inline">Profile</span>
               </button>
 
-              {/* Dropdown Menu */}
               {showDropdown && (
-                <div
-                  className="absolute bottom-14 right-0 bg-neutral-900 border border-neutral-800 rounded-lg shadow-xl w-40 md:bottom-auto md:left-14 md:top-0"
-                >
+                <div className="absolute bottom-14 right-0 bg-neutral-900 border border-neutral-800 rounded-lg shadow-xl w-44 md:bottom-auto md:left-14 md:top-0">
+                  <Link to="/profile" onClick={() => setShowDropdown(false)} className="block px-4 py-2 hover:bg-neutral-800">Edit Profile</Link>
+
+                  {/* ✅ Mobile Only: Terms inside Profile Dropdown */}
                   <Link
-                    to="/profile"
+                    to="/terms"
                     onClick={() => setShowDropdown(false)}
-                    className="block px-4 py-2 hover:bg-neutral-800 text-left w-full"
+                    className="block px-4 py-2 hover:bg-neutral-800 text-gray-300 md:hidden"
                   >
-                    Edit Profile
+                    Terms & Conditions
                   </Link>
-                  <button
-                    onClick={onLogoutClick}
-                    className="block w-full text-left px-4 py-2 hover:bg-neutral-800 text-red-400"
-                  >
+
+                  <button onClick={onLogoutClick} className="block w-full text-left px-4 py-2 hover:bg-neutral-800 text-red-400">
                     Logout
                   </button>
                 </div>
@@ -172,6 +155,16 @@ const Sidebar = () => {
             </li>
           </ul>
         </nav>
+
+        {/* ✅ Desktop Only: Terms at Bottom of Sidebar */}
+        <div className="hidden md:block mt-auto mb-4 text-center">
+          <Link
+            to="/terms"
+            className="text-sm text-gray-400 hover:text-gray-200 hover:underline"
+          >
+            Terms & Conditions
+          </Link>
+        </div>
       </div>
     </>
   );

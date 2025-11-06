@@ -10,6 +10,8 @@ import Feed from "./Components/Feed";
 import Profile from "./Components/Profile";
 import Connections from "./Components/Connections";
 import Requests from "./Components/Requests";
+import Terms from "./Components/Terms"; // adjust path if needed
+
 
 function App() {
   return (
@@ -26,6 +28,7 @@ function App() {
             <Route path="/connections" element={<Connections />} />
             <Route path="/requests" element={<Requests />} />
           </Route>
+          <Route path="/terms" element={<Terms />} />
         </Routes>
       </BrowserRouter>
     </Provider>
