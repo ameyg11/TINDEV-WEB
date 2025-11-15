@@ -11,6 +11,7 @@ import Profile from "./Components/Profile";
 import Connections from "./Components/Connections";
 import Requests from "./Components/Requests";
 import Terms from "./Components/Terms"; // adjust path if needed
+import Premium from "./Components/Premium";
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/connections" element={<Connections />} />
             <Route path="/requests" element={<Requests />} />
+            <Route path="/premium" element={<Premium />} />
           </Route>
           <Route path="/terms" element={<Terms />} />
         </Routes>

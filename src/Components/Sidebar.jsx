@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { addUser } from "../utils/userSlice";
-import { FaUserFriends, FaRegBell, FaRegCommentDots } from "react-icons/fa";
+import { FaUserFriends, FaRegBell, FaRegCommentDots, FaCrown } from "react-icons/fa";
 import { IoHomeOutline } from "react-icons/io5";
 
 const Sidebar = () => {
@@ -46,6 +46,7 @@ const Sidebar = () => {
     { to: "/", icon: <IoHomeOutline size={24} />, text: "Home" },
     { to: "/requests", icon: <FaRegBell size={24} />, text: "Requests" },
     { to: "/connections", icon: <FaUserFriends size={24} />, text: "Connections" },
+    { to: "/premium", icon: <FaCrown size={24} />, text: "Premium" },
   ];
 
   return (
