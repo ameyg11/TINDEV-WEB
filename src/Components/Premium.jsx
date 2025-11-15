@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../utils/constants";
 
 const CheckIcon = ({ className = "w-6 h-6" }) => (
@@ -53,6 +53,10 @@ const Feature = ({ children, highlighted }) => (
 
 const Premium = () => {
   const [isUserPremium, setIsUserPremium] = useState(false);
+
+  useEffect(() => {
+    verifyPremiumUser();
+  }, []);
 
   const verifyPremiumUser = async () => {
     const response = await axios.get(BASE_URL + "/premium/verify", {
@@ -115,7 +119,7 @@ const Premium = () => {
         </p>
 
         <button
-          onClick={() => (window.location.href = "/home")}
+          onClick={() => (window.location.href = "/")}
           className="mt-4 bg-yellow-500 hover:bg-yellow-600 text-black px-6 py-3 rounded-xl font-semibold transition-all"
         >
           Go to Dashboard
