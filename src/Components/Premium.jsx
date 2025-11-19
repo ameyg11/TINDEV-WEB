@@ -128,6 +128,14 @@ const Premium = () => {
     </div>
   ) : (
     <div className="relative font-sans flex flex-col items-center justify-center bg-white dark:bg-black min-h-screen px-4 py-20">
+      {/* Disable entire UI with overlay */}
+      <div className="absolute inset-0 backdrop-blur-xs bg-black/40 z-50 flex flex-col items-center justify-center text-center px-4">
+        <h2 className="text-white text-3xl font-bold mb-2">
+          Coming Soon in Production
+        </h2>
+        <p className="text-gray-300 text-sm">Sorry for the inconvenience.</p>
+      </div>
+
       <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 dark:text-white text-center">
         Choose Your
         <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500 ml-2">
