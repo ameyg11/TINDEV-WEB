@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { addConnections } from "../utils/connectionSlice";
+import { Link } from "react-router-dom";
 
 const Connections = () => {
   const connections = useSelector((store) => store.connections);
@@ -65,40 +66,13 @@ const Connections = () => {
 
                 {/* 3. Action Buttons (Flex-Shrink-0 to keep them grouped on the right) */}
                 <div className="flex space-x-1 flex-shrink-0">
-                  {/* Play/Send Button */}
-                  {/* <button className="btn btn-square btn-ghost btn-sm text-primary hover:bg-base-300">
-                    <svg
-                      className="w-5 h-5"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M6 3L20 12 6 21 6 3z"></path>
-                    </svg>
-                  </button> */}
-
-                  {/* Heart/Like Button */}
-                  {/* <button className="btn btn-square btn-ghost btn-sm text-error/80 hover:bg-base-300">
-                    <svg
-                      className="w-5 h-5"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
-                    </svg>
-                  </button> */}
+                  <Link to={"/chat/"+_id}>
+                    <button className="btn text-lg btn-square btn-ghost btn-sm text-primary hover:bg-base-300">
+                      Chat
+                    </button>
+                  </Link>
                 </div>
               </li>
-              {/* You would repeat the <li> element for each item in your list */}
             </ul>
           </div>
         );

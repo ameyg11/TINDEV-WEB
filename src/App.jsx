@@ -12,6 +12,7 @@ import Connections from "./Components/Connections";
 import Requests from "./Components/Requests";
 import Terms from "./Components/Terms"; // adjust path if needed
 import Premium from "./Components/Premium";
+import Chat from "./Components/Chat";
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
             <Route path="/connections" element={<Connections />} />
             <Route path="/requests" element={<Requests />} />
             <Route path="/premium" element={<Premium />} />
+            <Route path="/chat/:targetUserId" element={<Chat />} />
           </Route>
           <Route path="/terms" element={<Terms />} />
         </Routes>

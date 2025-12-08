@@ -329,7 +329,7 @@ const EditProfile = ({ user }) => {
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative bg-gradient-to-b from-[#1b1b1b]/95 to-[#111]/95 border border-[#2a2a2a] rounded-2xl shadow-2xl max-w-sm w-full p-6 transform transition-all duration-300 scale-95 opacity-0 animate-fadeInCard hover:scale-105"
+            className="relative bg-linear-to-b from-[#1b1b1b]/95 to-[#111]/95 border border-[#2a2a2a] rounded-2xl shadow-2xl max-w-sm w-full p-6 transform transition-all duration-300 scale-95 opacity-0 animate-fadeInCard hover:scale-105"
           >
             <button
               onClick={() => setShowPreview(false)}
